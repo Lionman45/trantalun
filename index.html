@@ -58,7 +58,7 @@
     <body>
         <div id="topBar">
             <input type="text" name="site" id="site" value="" class="styled"/>
-            <button onclick="goToPage()" class="styled">Go!</button>
+            <!-- <button onclick="goToPage()" class="styled">Go!</button> -->
             <button onclick="openFullscreen()" class="styled">Fullscreen</button>
             <!-- <p class="styled" id="url"></p> -->
         </div>
@@ -71,6 +71,10 @@
                 document.getElementById("sitePage").innerHTML = `${startHtml}${document.getElementById("site").value}${endHtml}`
                 // document.getElementById("url").textContent = document.getElementById("iF").src
             }
+
+            setInterval(() => {
+                goToPage()
+            }, 1000)
         
             function openFullscreen() {
                 const elem = document.getElementById("sitePage"); // or any other specific element like document.getElementById('myElement')
@@ -86,3 +90,4 @@
 
         </script>
     </body>
+</html>
