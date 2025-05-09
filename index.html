@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <title>Trantalun - The best learning place</title>
+    <head>
+        <!-- <link rel="stylesheet" href="styles.css"/> -->
+        <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+                height: 100vh; /* Use full viewport height */
+                background: linear-gradient(to right, #4CAF50, #008CBA);
+            }
+        
+            #topBar {
+                display: flex;             
+                align-items: center;      
+                gap: 10px;                 
+                width: 100%;
+                padding: 10px;
+                box-sizing: border-box;
+                border: none;
+            }
+
+            #site {
+                flex: 1;                  
+                min-width: 0;
+                background: linear-gradient(to right, #347836, #004e68);
+                padding: 10px;
+                border-radius: 5px;
+                color: #ffffff;
+                font-weight: bold;
+                border: none;
+            }
+
+            button.styled {
+                white-space: nowrap;
+                background: linear-gradient(to right, #347836, #004e68);
+                padding: 10px;
+                border-radius: 5px;
+                color: #ffffff;
+                font-weight: bold;
+                border: none;
+            }
+
+        
+            #sitePage {
+                width: 100%;
+                height: calc(100vh - 60px);
+            }
+        
+            iframe {
+                width: 100%;
+                height: 100%;
+                border: none;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="topBar">
+            <input type="text" name="site" id="site" value="" class="styled"/>
+            <button onclick="goToPage()" class="styled">Go!</button>
+            <button onclick="openFullscreen()" class="styled">Fullscreen</button>
+            <!-- <p class="styled" id="url"></p> -->
+        </div>
+        <div id="sitePage"></div>
+        <script>
+            let startHtml = "<iframe id='iF' src='https://prostudyhabits.co/uv.html?site="
+            let endHtml = "'></iframe>"
+        
+            function goToPage() {
+                document.getElementById("sitePage").innerHTML = `${startHtml}${document.getElementById("site").value}${endHtml}`
+                // document.getElementById("url").textContent = document.getElementById("iF").src
+            }
+        
+            function openFullscreen() {
+                const elem = document.getElementById("sitePage"); // or any other specific element like document.getElementById('myElement')
+                
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) { /* Safari */
+                    elem.webkitRequestFullscreen();
+                } else if (elem.msRequestFullscreen) { /* IE11 */
+                    elem.msRequestFullscreen();
+                }
+            }
+
+        </script>
+    </body>
