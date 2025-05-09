@@ -61,11 +61,12 @@
     <button onclick="refreshIframe()" class="styled">@</button>
     <button onclick="openFullscreen()" class="styled">Fullscreen</button>
   </div>
-  <div id="sitePage"></div>
+  <div id="sitePage">
+    <iframe id="iF" src=""></iframe>
+  </div>
 
   <script>
-    const startHtml = "<iframe id='iF' src='https://prostudyhabits.co/uv.html?site=";
-    const endHtml = "'></iframe>";
+    const proxyURL = "https://prostudyhabits.co/uv.html?site=";
     let currentUrl = "";
     let historyStack = [];
 
@@ -76,7 +77,7 @@
       if (site !== "") {
         currentUrl = site;
         historyStack.push(site);
-        document.getElementById("sitePage").innerHTML = `${startHtml}${site}${endHtml}`;
+        document.getElementById("iF").src = proxyURL + site;
         updateInputToCurrentUrl();
       }
     }
