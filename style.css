@@ -3,67 +3,52 @@ html, body {
   padding: 0;
   height: 100vh;
   background: linear-gradient(to right, #4CAF50, #008CBA);
-  font-family: sans-serif;
+  font-family: Arial, sans-serif;
 }
 
 #tabBar {
   display: flex;
   align-items: center;
+  padding: 5px;
   background: linear-gradient(to right, #1A3C1B, #002734);
-  padding: 5px 10px;
   overflow-x: auto;
 }
 
 .tab {
   display: flex;
   align-items: center;
-  background-color: #2e4d2f;
+  background: #2d2d2d;
   color: white;
-  font-family: sans-serif;
-  padding: 6px 12px;
-  margin-right: 6px;
   border-radius: 8px 8px 0 0;
-  font-weight: bold;
+  padding: 5px 10px;
+  margin-right: 5px;
   cursor: pointer;
-  position: relative;
   transition: background 0.2s;
 }
 
 .tab:hover {
-  background: #3a5c3b;
+  background: #3d3d3d;
 }
 
 .tab.active {
-  background: #4CAF50;
+  background: #555;
 }
 
-.close-btn {
-  margin-left: 10px;
-  color: #ccc;
-  font-weight: normal;
+.tab .close {
+  margin-left: 8px;
+  color: red;
+  font-weight: bold;
   cursor: pointer;
 }
 
-.close-btn:hover {
+#addTabBtn {
+  background: #1A3C1B;
   color: white;
-}
-
-#addTab {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border: none;
   font-size: 20px;
-  width: 32px;
-  height: 32px;
-  background: #2e4d2f;
-  color: white;
-  border-radius: 8px;
+  padding: 5px 10px;
   cursor: pointer;
-  transition: background 0.2s;
-}
-
-#addTab:hover {
-  background: #3a5c3b;
+  border-radius: 8px;
 }
 
 #topBar {
@@ -100,11 +85,15 @@ button.styled {
 
 #sitePage {
   width: 100%;
-  height: calc(100vh - 60px - 42px); /* 60px topBar + 42px tabBar approx */
+  height: calc(100vh - 110px);
+  position: relative;
 }
 
-iframe {
+.siteFrame {
   width: 100%;
   height: 100%;
   border: none;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
