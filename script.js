@@ -1,43 +1,116 @@
 const proxyURL = "https://prostudyhabits.co/uv.html?site=";
-let currentUrl = "";
-let historyStack = [];
+const tabBar = document.getElementById("tabBar");
+const siteInput = document.getElementById("site");
+const iframe = document.getElementById("iF");
+
+// Stores tab-specific data
+let tabs = [];
+let activeTabId = null;
+
+function createTab(url = "") {
+  const id = Date.now().toString();
+  const tab = document.createElement("div");
+  tab.className = "tab";
+  tab.dataset.tabId = id;
+  tab.innerHTML = `New Tab <span class="close-btn">&times;</span>`;
+  tabBar.insertBefore(tab, document.getElementById("addTab"));
+
+  const tabData = {
+    id,
+    title: "New Tab",
+    url,
+    history: url ? [url] : [],
+    historyIndex: url ? 0 : -1
+  };
+
+  tabs.push(tabData);
+  attachTabEvents(tab);
+  setActiveTab(id);
+}
+
+function attachTabEvents(tabElement) {
+  const id = tabElement.dataset.tabId;
+
+  tabElement.addEventListener("click", () => {
+    setActiveTab(id);
+  });
+
+  const closeBtn = tabElement.querySelector(".close-btn");
+  closeBtn.addEventListener("click", (e) => {
+    e.stopPropagation();
+    closeTab(id);
+  });
+}
+
+function closeTab(id) {
+  const tabIndex = tabs.findIndex(tab => tab.id === id);
+  if (tabIndex !== -1) {
+    tabs.splice(tabIndex, 1);
+    const tabElement = document.querySelector(`.tab[data-tab-id="${id}"]`);
+    if (tabElement) tabElement.remove();
+
+    // Switch to another tab if the closed one was active
+    if (activeTabId === id) {
+      if (tabs.length > 0) {
+        const nextTab = tabs[Math.max(0, tabIndex - 1)];
+        setActiveTab(nextTab.id);
+      } else {
+        iframe.src = "";
+        siteInput.value = "";
+        activeTabId = null;
+      }
+    }
+  }
+}
+
+function setActiveTab(id) {
+  activeTabId = id;
+
+  document.querySelectorAll(".tab").forEach(tab => tab.classList.remove("active"));
+  const activeTabElement = document.querySelector(`.tab[data-tab-id="${id}"]`);
+  if (activeTabElement) activeTabElement.classList.add("active");
+
+  const tabData = tabs.find(t => t.id === id);
+  if (tabData) {
+    iframe.src = tabData.url ? proxyURL + tabData.url : "";
+    siteInput.value = tabData.url || "";
+  }
+}
 
 function goToPage(url = null) {
-  const input = document.getElementById("site");
-  const site = url || input.value.trim();
+  const tabData = tabs.find(t => t.id === activeTabId);
+  if (!tabData) return;
 
-  if (site !== "") {
-    currentUrl = site;
-    historyStack.push(site);
-    document.getElementById("iF").src = proxyURL + site;
-    updateInputToCurrentUrl();
-  }
+  const site = url || siteInput.value.trim();
+  if (site === "") return;
+
+  // Add to history
+  tabData.history = tabData.history.slice(0, tabData.historyIndex + 1); // truncate forward history
+  tabData.history.push(site);
+  tabData.historyIndex++;
+  tabData.url = site;
+
+  iframe.src = proxyURL + site;
+  siteInput.value = site;
 }
 
 function goBack() {
-  if (historyStack.length > 1) {
-    historyStack.pop(); // Remove current
-    const previousUrl = historyStack[historyStack.length - 1];
-    goToPage(previousUrl);
-  }
+  const tabData = tabs.find(t => t.id === activeTabId);
+  if (!tabData || tabData.historyIndex <= 0) return;
+
+  tabData.historyIndex--;
+  const previousUrl = tabData.history[tabData.historyIndex];
+  tabData.url = previousUrl;
+  iframe.src = proxyURL + previousUrl;
+  siteInput.value = previousUrl;
 }
 
 function refreshIframe() {
-  goToPage(currentUrl);
-}
-
-function updateInputToCurrentUrl() {
-  const iframe = document.getElementById("iF");
-  if (iframe) {
-    document.getElementById("site").value = currentUrl;
+  const tabData = tabs.find(t => t.id === activeTabId);
+  if (tabData && tabData.url) {
+    iframe.src = proxyURL + tabData.url;
   }
 }
-
-document.getElementById("site").addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
-    goToPage();
-  }
-});
 
 function openFullscreen() {
   const elem = document.getElementById("sitePage");
@@ -50,37 +123,14 @@ function openFullscreen() {
   }
 }
 
-// --- Tab Handling ---
-
-document.getElementById("addTab").addEventListener("click", () => {
-  const tabBar = document.getElementById("tabBar");
-  const newTab = document.createElement("div");
-  newTab.className = "tab";
-  newTab.innerHTML = `New Tab <span class="close-btn">&times;</span>`;
-  tabBar.insertBefore(newTab, document.getElementById("addTab"));
-  setActiveTab(newTab);
-  attachTabEvents(newTab);
+siteInput.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    goToPage();
+  }
 });
 
-function attachTabEvents(tab) {
-  tab.addEventListener("click", () => setActiveTab(tab));
-  const closeBtn = tab.querySelector(".close-btn");
-  if (closeBtn) {
-    closeBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      const isActive = tab.classList.contains("active");
-      tab.remove();
-      if (isActive) {
-        const remainingTabs = document.querySelectorAll(".tab");
-        if (remainingTabs.length > 0) {
-          setActiveTab(remainingTabs[0]);
-        }
-      }
-    });
-  }
-}
+// Plus tab click
+document.getElementById("addTab").addEventListener("click", () => createTab());
 
-function setActiveTab(tab) {
-  document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-  tab.classList.add("active");
-}
+// Create initial tab on load
+createTab();
