@@ -72,9 +72,9 @@ function closeTab(index, event) {
     }
 }
 
-function goToPage(url = null) {
+function goToPage(url) {
     const input = document.getElementById("site");
-    const site = url || input.value.trim();
+    const site = url // || input.value.trim();
 
     if (site !== "" && currentTabIndex !== -1) {
         const fullUrl = proxyURL + site;
@@ -108,7 +108,7 @@ function updateInputToCurrentUrl() {
 
 document.getElementById("site").addEventListener("keydown", function (event) {
     if (event.key === "Enter") {
-        goToPage();
+        goToPage(document.getElementById("site").value);
     }
 });
 
