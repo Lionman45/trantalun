@@ -3,7 +3,7 @@ const proxyURL = "https://prostudyhabits.co/uv.html?site=";
 let tabs = [];
 let currentTabIndex = -1;
 
-function openGame() {
+function cloak() {
     var win = window.open()
     var url = "https://trantalun.nwpa.com.au"
     var iframe = win.document.createElement('iframe')
