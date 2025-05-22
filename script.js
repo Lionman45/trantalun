@@ -4,14 +4,14 @@ let tabs = [];
 let currentTabIndex = -1;
 
 function cloak() {
-    var win = window.open()
-    var url = "https://trantalun.nwpa.com.au"
-    var iframe = win.document.createElement('iframe')
+    var win = window.open();
+    var url = "https://trantalun.nwpa.com.au";
+    var iframe = win.document.createElement('iframe');
     iframe.style.width = "100%";
     iframe.style.height = "100%";
     iframe.style.border = "none";
-    iframe.src = url
-    win.document.body.appendChild(iframe)
+    iframe.src = url;
+    win.document.body.appendChild(iframe);
 }
 
 function createTab(url = "") {
@@ -73,16 +73,14 @@ function closeTab(index, event) {
 }
 
 function goToPage(url) {
-    const input = document.getElementById("site");
-    const site = url // || input.value.trim();
-
-    if (site !== "" && currentTabIndex !== -1) {
+    const site = url?.trim();
+    if (site && currentTabIndex !== -1) {
         const fullUrl = proxyURL + site;
         const tab = tabs[currentTabIndex];
         tab.url = site;
-        tab.iframe.src = fullUrl; // force iframe to load new page
+        tab.iframe.src = fullUrl;
 
-        // Update the tab label
+        // Update tab label
         const tabEl = document.querySelectorAll(".tab")[currentTabIndex];
         tabEl.querySelector("span").innerText = site.replace(/^https?:\/\//, "");
     }
@@ -106,12 +104,6 @@ function updateInputToCurrentUrl() {
     }
 }
 
-document.getElementById("site").addEventListener("keydown", function (event) {
-    if (event.key === "Enter") {
-        goToPage(document.getElementById("site").value);
-    }
-});
-
 function openFullscreen() {
     const elem = document.getElementById("sitePage");
     if (elem.requestFullscreen) {
@@ -124,8 +116,18 @@ function openFullscreen() {
 }
 
 function init() {
-    createTab(); // Create initial tab
-    selectTab(0); // Select it immediately
+    createTab();
+    selectTab(0);
+
+    // Ensure input exists before adding listener
+    const input = document.getElementById("site");
+    if (input) {
+        input.addEventListener("keydown", function (event) {
+            if (event.key === "Enter") {
+                goToPage(input.value);
+            }
+        });
+    }
 }
 
 document.addEventListener("DOMContentLoaded", init);
