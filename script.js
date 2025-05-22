@@ -1,33 +1,34 @@
 const proxyURL = "https://prostudyhabits.co/uv.html?site=";
-const defaultHome = "google.com"; // fallback content
 
 let tabs = [];
 let currentTabIndex = -1;
 
 function cloak() {
-    const win = window.open();
-    const url = "https://trantalun.nwpa.com.au";
-    const iframe = win.document.createElement("iframe");
+    var win = window.open();
+    var url = "https://trantalun.nwpa.com.au";
+    var iframe = win.document.createElement('iframe');
     iframe.style.width = "100%";
     iframe.style.height = "100%";
     iframe.style.border = "none";
     iframe.src = url;
-    win.document.body.style.margin = "0";
-    win.document.body.style.padding = "0";
     win.document.body.appendChild(iframe);
 }
 
-function createTab(url = defaultHome) {
+function createTab(url = "") {
     const tab = {
         url,
         iframe: document.createElement("iframe")
     };
-    tab.iframe.src = proxyURL + url;
+
     tab.iframe.className = "siteFrame";
+    tab.iframe.src = url ? proxyURL + url : "";
     tab.iframe.style.display = "none";
     tab.iframe.style.width = "100%";
     tab.iframe.style.height = "100%";
     tab.iframe.style.border = "none";
+    tab.iframe.style.position = "absolute";
+    tab.iframe.style.top = "0";
+    tab.iframe.style.left = "0";
 
     document.getElementById("sitePage").appendChild(tab.iframe);
     tabs.push(tab);
@@ -36,7 +37,7 @@ function createTab(url = defaultHome) {
     const tabEl = document.createElement("div");
     tabEl.className = "tab";
     tabEl.innerHTML = `
-        <span>${url.replace(/^https?:\/\//, "")}</span>
+        <span>${url ? url.replace(/^https?:\/\//, "") : "New Tab"}</span>
         <span class="close" onclick="closeTab(${index}, event)">×</span>
     `;
     tabEl.onclick = () => selectTab(index);
@@ -48,6 +49,7 @@ function selectTab(index) {
         tabs[currentTabIndex].iframe.style.display = "none";
         document.querySelectorAll(".tab")[currentTabIndex].classList.remove("active");
     }
+
     currentTabIndex = index;
     const tab = tabs[index];
     tab.iframe.style.display = "block";
@@ -61,7 +63,6 @@ function closeTab(index, event) {
 
     tabs[index].iframe.remove();
     tabs.splice(index, 1);
-
     document.querySelectorAll(".tab")[index].remove();
 
     if (wasActive) {
@@ -78,7 +79,7 @@ function closeTab(index, event) {
 
 function goToPage(url) {
     const site = url.trim();
-    if (site && currentTabIndex !== -1) {
+    if (site !== "" && currentTabIndex !== -1) {
         const fullUrl = proxyURL + site;
         const tab = tabs[currentTabIndex];
         tab.url = site;
@@ -107,6 +108,12 @@ function updateInputToCurrentUrl() {
     }
 }
 
+document.getElementById("site").addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        goToPage(document.getElementById("site").value);
+    }
+});
+
 function openFullscreen() {
     const elem = document.getElementById("sitePage");
     if (elem.requestFullscreen) {
@@ -119,17 +126,12 @@ function openFullscreen() {
 }
 
 function init() {
-    createTab(); // open default site
-    selectTab(0);
+    // Remove any hardcoded iframe (like <iframe id="iF">)
+    const existing = document.querySelector("iframe#iF");
+    if (existing) existing.remove();
 
-    const input = document.getElementById("site");
-    if (input) {
-        input.addEventListener("keydown", function (event) {
-            if (event.key === "Enter") {
-                goToPage(input.value);
-            }
-        });
-    }
+    createTab(); // Create first tab
+    selectTab(0);
 }
 
 document.addEventListener("DOMContentLoaded", init);
