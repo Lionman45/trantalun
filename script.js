@@ -66,10 +66,14 @@ function goToPage(url = null) {
     const site = url || input.value.trim();
 
     if (site !== "" && currentTabIndex !== -1) {
-        tabs[currentTabIndex].url = site;
-        tabs[currentTabIndex].iframe.src = proxyURL + site;
-        document.querySelectorAll(".tab")[currentTabIndex].querySelector("span").innerText = site.replace(/^https?:\/\//, "");
-        updateInputToCurrentUrl();
+        const fullUrl = proxyURL + site;
+        const tab = tabs[currentTabIndex];
+        tab.url = site;
+        tab.iframe.src = fullUrl; // force iframe to load new page
+
+        // Update the tab label
+        const tabEl = document.querySelectorAll(".tab")[currentTabIndex];
+        tabEl.querySelector("span").innerText = site.replace(/^https?:\/\//, "");
     }
 }
 
