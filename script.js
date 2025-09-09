@@ -1,11 +1,11 @@
-const proxyURL = "https://prostudyhabits.co/uv.html?site=";
+const proxyURL = "https://gt.nwpa.com.au/uv.html?site=";
 
 let tabs = [];
 let currentTabIndex = -1;
 
 function cloak() {
     var win = window.open();
-    var url = "https://trantalun.nwpa.com.au";
+    var url = "https://classroom.nwpa.com.au";
     var iframe = win.document.createElement('iframe');
     iframe.style.width = "100%";
     iframe.style.height = "100%";
@@ -27,7 +27,7 @@ function createTab(url = "") {
     tab.iframe.style.height = "calc(100vh - 60px - 42px)";
     tab.iframe.style.border = "none";
     tab.iframe.style.position = "absolute";
-    tab.iframe.style.top = "0";
+    tab.iframe.style.top = "102px";
     tab.iframe.style.left = "0";
 
     document.getElementById("sitePage").appendChild(tab.iframe);
