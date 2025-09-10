@@ -86,7 +86,7 @@ function goToPage(url) {
         tab.iframe.src = fullUrl;
 
         const tabEl = document.querySelectorAll(".tab")[currentTabIndex];
-        tabEl.querySelector("span").innerText = site.replace(/^https?:\/\//, "");
+        tabEl.querySelector("span").innerText = tab.iframe.html.head.title.innerHTML;
     }
 }
 
