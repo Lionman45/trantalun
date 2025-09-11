@@ -77,6 +77,17 @@ function closeTab(index, event) {
     }
 }
 
+async function getPageTitle(url) {
+    try {
+        const response = await fetch("https://" + url);
+        const text = await response.text();
+        const match = text.match(/<title>(.*?)<\/title>/i);
+        return match ? match[1] : url.replace(/^https?:\/\//, "");
+    } catch (e) {
+        return url.replace(/^https?:\/\//, "");
+    }
+}
+
 function goToPage(url) {
     const site = url.trim();
     if (site !== "" && currentTabIndex !== -1) {
@@ -86,7 +97,10 @@ function goToPage(url) {
         tab.iframe.src = fullUrl;
 
         const tabEl = document.querySelectorAll(".tab")[currentTabIndex];
-        tabEl.querySelector("span").innerText = tab.iframe.html.head.title.innerHTML;
+        // Update tab title asynchronously
+        getPageTitle(site).then(title => {
+            tabEl.querySelector("span").innerText = title;
+        });
     }
 }
 
