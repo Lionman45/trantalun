@@ -11,6 +11,8 @@ function cloak() {
     iframe.style.height = "100%";
     iframe.style.border = "none";
     iframe.src = url;
+    win.document.body.style.margin = "0";
+    win.document.body.style.padding = "0";
     win.document.body.appendChild(iframe);
 }
 
@@ -29,6 +31,21 @@ function createTab(url = "") {
     tab.iframe.style.position = "absolute";
     tab.iframe.style.top = "102px";
     tab.iframe.style.left = "0";
+
+    // remove default margins if about:blank or same-origin
+    tab.iframe.onload = () => {
+        try {
+            const doc = tab.iframe.contentDocument || tab.iframe.contentWindow.document;
+            if (doc) {
+                doc.body.style.margin = "0";
+                doc.body.style.padding = "0";
+                doc.documentElement.style.margin = "0";
+                doc.documentElement.style.padding = "0";
+            }
+        } catch (e) {
+            // ignore cross-origin
+        }
+    };
 
     document.getElementById("sitePage").appendChild(tab.iframe);
     tabs.push(tab);
