@@ -3,6 +3,86 @@ const proxyURL = "https://gt.nwpa.com.au/uv.html?site=";
 let tabs = [];
 let currentTabIndex = -1;
 
+const themes = {
+  midnight: {
+    "--bg-gradient": "linear-gradient(to right, #0f0c29, #302b63, #24243e)",
+    "--tab-bg": "#1a1a2e",
+    "--tab-hover": "#16213e",
+    "--tab-active": "#0f3460",
+    "--tabbar-bg": "linear-gradient(to right, #1a1a2e, #16213e)",
+    "--input-bg": "#1a1a2e",
+    "--btn-bg": "#1a1a2e",
+    "--text-color": "#ffffff"
+  },
+  classic: {
+    "--bg-gradient": "linear-gradient(to right, #4CAF50, #008CBA)",
+    "--tab-bg": "#2e4d2f",
+    "--tab-hover": "#3a5c3b",
+    "--tab-active": "#4CAF50",
+    "--tabbar-bg": "linear-gradient(to right, #1A3C1B, #002734)",
+    "--input-bg": "linear-gradient(to right, #347836, #004e68)",
+    "--btn-bg": "linear-gradient(to right, #347836, #004e68)",
+    "--text-color": "#ffffff"
+  },
+  dark: {
+    "--bg-gradient": "#121212",
+    "--tab-bg": "#1f1f1f",
+    "--tab-hover": "#2a2a2a",
+    "--tab-active": "#333333",
+    "--tabbar-bg": "#1a1a1a",
+    "--input-bg": "#222222",
+    "--btn-bg": "#222222",
+    "--text-color": "#e0e0e0"
+  },
+  light: {
+    "--bg-gradient": "#f5f5f5",
+    "--tab-bg": "#e0e0e0",
+    "--tab-hover": "#d5d5d5",
+    "--tab-active": "#cccccc",
+    "--tabbar-bg": "#eeeeee",
+    "--input-bg": "#ffffff",
+    "--btn-bg": "#ffffff",
+    "--text-color": "#000000"
+  },
+  rainbow: {
+    "--bg-gradient": "linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet)",
+    "--tab-bg": "#444",
+    "--tab-hover": "#555",
+    "--tab-active": "#666",
+    "--tabbar-bg": "linear-gradient(90deg, red, orange, yellow, green, blue, indigo, violet)",
+    "--input-bg": "#333",
+    "--btn-bg": "#333",
+    "--text-color": "#ffffff"
+  },
+  forest: {
+    "--bg-gradient": "linear-gradient(to right, #0b6623, #228b22, #006400)",
+    "--tab-bg": "#145214",
+    "--tab-hover": "#1b6e1b",
+    "--tab-active": "#228b22",
+    "--tabbar-bg": "linear-gradient(to right, #0b6623, #145214)",
+    "--input-bg": "#145214",
+    "--btn-bg": "#145214",
+    "--text-color": "#ffffff"
+  }
+};
+
+function setTheme(themeName) {
+  const theme = themes[themeName];
+  if (!theme) return;
+  for (const key in theme) {
+    document.documentElement.style.setProperty(key, theme[key]);
+  }
+}
+
+function openSettings() {
+  document.getElementById("settingsOverlay").style.display = "flex";
+}
+function closeSettings() {
+  document.getElementById("settingsOverlay").style.display = "none";
+}
+
+document.getElementById("settingsBtn").addEventListener("click", openSettings);
+
 function cloak() {
     var win = window.open();
     var url = "https://classroom.nwpa.com.au";
