@@ -32,7 +32,6 @@ function createTab(url = "") {
     tab.iframe.style.top = "102px";
     tab.iframe.style.left = "0";
 
-    // remove default margins if about:blank or same-origin
     tab.iframe.onload = () => {
         try {
             const doc = tab.iframe.contentDocument || tab.iframe.contentWindow.document;
@@ -42,9 +41,7 @@ function createTab(url = "") {
                 doc.documentElement.style.margin = "0";
                 doc.documentElement.style.padding = "0";
             }
-        } catch (e) {
-            // ignore cross-origin
-        }
+        } catch (e) {}
     };
 
     document.getElementById("sitePage").appendChild(tab.iframe);
@@ -114,7 +111,6 @@ function goToPage(url) {
         tab.iframe.src = fullUrl;
 
         const tabEl = document.querySelectorAll(".tab")[currentTabIndex];
-        // Update tab title asynchronously
         getPageTitle(site).then(title => {
             tabEl.querySelector("span").innerText = title;
         });
@@ -157,12 +153,65 @@ function openFullscreen() {
 }
 
 function init() {
-    // Remove any hardcoded iframe (like <iframe id="iF">)
     const existing = document.querySelector("iframe#iF");
     if (existing) existing.remove();
-
-    createTab(); // Create first tab
+    createTab();
     selectTab(0);
 }
 
 document.addEventListener("DOMContentLoaded", init);
+
+// --- Settings Menu Logic ---
+const settingsBtn = document.getElementById("settingsBtn");
+const settingsMenu = document.getElementById("settingsMenu");
+const settingsOverlay = document.getElementById("settingsOverlay");
+
+settingsBtn.addEventListener("click", () => {
+    settingsMenu.classList.toggle("active");
+    settingsOverlay.classList.toggle("active");
+});
+
+settingsOverlay.addEventListener("click", () => {
+    settingsMenu.classList.remove("active");
+    settingsOverlay.classList.remove("active");
+});
+
+// --- Theme Switching ---
+function setTheme(theme) {
+    const body = document.body;
+    body.className = ""; // reset classes
+    switch (theme) {
+        case "midnight":
+            body.style.background = "linear-gradient(270deg, #0f0f2e, #1a0033, #000000)";
+            body.style.backgroundSize = "600% 600%";
+            animateBackground();
+            break;
+        case "classic":
+            body.style.background = "linear-gradient(to right, #4CAF50, #008CBA)";
+            break;
+        case "dark":
+            body.style.background = "#222";
+            break;
+        case "light":
+            body.style.background = "#fff";
+            break;
+        case "rainbow":
+            body.style.background = "linear-gradient(270deg, red, orange, yellow, green, blue, indigo, violet)";
+            body.style.backgroundSize = "1400% 1400%";
+            animateBackground();
+            break;
+        case "forest": // my choice 🌲
+            body.style.background = "linear-gradient(135deg, #003300, #006600, #009933)";
+            body.style.backgroundSize = "600% 600%";
+            animateBackground();
+            break;
+    }
+}
+
+// animate gradient
+function animateBackground() {
+    document.body.animate(
+        [{ backgroundPosition: "0% 50%" }, { backgroundPosition: "100% 50%" }],
+        { duration: 15000, iterations: Infinity, direction: "alternate", easing: "linear" }
+    );
+}
