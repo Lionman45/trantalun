@@ -4,6 +4,7 @@ html, body {
   height: 100vh;
   background: linear-gradient(to right, #4CAF50, #008CBA);
   font-family: sans-serif;
+  transition: background 1s ease;
 }
 
 #tabBar {
@@ -100,7 +101,7 @@ button.styled {
 
 #sitePage {
   width: 100%;
-  height: calc(100vh - 60px - 42px); /* 60px topBar + 42px tabBar approx */
+  height: calc(100vh - 60px - 42px);
 }
 
 iframe {
@@ -108,4 +109,63 @@ iframe {
   height: 100%;
   border: none;
   top: 102px;
+}
+
+/* Settings overlay */
+#settingsOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  z-index: 999;
+}
+
+#settingsOverlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Settings menu */
+#settingsMenu {
+  position: fixed;
+  top: 50%;
+  right: -320px;
+  transform: translateY(-50%);
+  width: 300px;
+  background: #222;
+  color: #fff;
+  padding: 20px;
+  border-radius: 12px 0 0 12px;
+  box-shadow: -4px 0 10px rgba(0,0,0,0.5);
+  transition: right 0.3s ease;
+  z-index: 1000;
+}
+
+#settingsMenu.active {
+  right: 0;
+}
+
+#settingsMenu h2 {
+  margin-top: 0;
+}
+
+#settingsMenu ul {
+  list-style: none;
+  padding: 0;
+}
+
+#settingsMenu li {
+  padding: 10px;
+  margin: 6px 0;
+  background: #333;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#settingsMenu li:hover {
+  background: #444;
 }
