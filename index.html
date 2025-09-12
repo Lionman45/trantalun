@@ -18,9 +18,26 @@
     <button onclick="refreshIframe()" class="styled"><i class="fa fa-refresh"></i></button>
     <button onclick="openFullscreen()" class="styled"><i class="fas fa-expand"></i></button>
     <button onclick="cloak()" class="styled"><i class="fa-solid fa-arrow-right-from-bracket"></i></button>
+    <!-- Settings Button -->
+    <button id="settingsBtn" class="styled"><i class="fa-regular fa-gear"></i></button>
   </div>
   <div id="sitePage">
     <iframe id="iF" src=""></iframe>
+  </div>
+
+  <!-- Settings Overlay -->
+  <div id="settingsOverlay"></div>
+  <div id="settingsMenu">
+    <h2>Settings</h2>
+    <p>Select Theme:</p>
+    <ul>
+      <li onclick="setTheme('midnight')">Midnight</li>
+      <li onclick="setTheme('classic')">Classic</li>
+      <li onclick="setTheme('dark')">Dark Mode</li>
+      <li onclick="setTheme('light')">Light Mode</li>
+      <li onclick="setTheme('rainbow')">Rainbow</li>
+      <li onclick="setTheme('forest')">Forest (my choice 🌲)</li>
+    </ul>
   </div>
 
   <script src="script.js"></script>
