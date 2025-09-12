@@ -1,16 +1,26 @@
+:root {
+  --bg-gradient: linear-gradient(to right, #4CAF50, #008CBA);
+  --tab-bg: #2e4d2f;
+  --tab-hover: #3a5c3b;
+  --tab-active: #4CAF50;
+  --tabbar-bg: linear-gradient(to right, #1A3C1B, #002734);
+  --input-bg: linear-gradient(to right, #347836, #004e68);
+  --btn-bg: linear-gradient(to right, #347836, #004e68);
+  --text-color: #ffffff;
+}
+
 html, body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  background: linear-gradient(to right, #4CAF50, #008CBA);
+  background: var(--bg-gradient);
   font-family: sans-serif;
-  transition: background 1s ease;
 }
 
 #tabBar {
   display: flex;
   align-items: center;
-  background: linear-gradient(to right, #1A3C1B, #002734);
+  background: var(--tabbar-bg);
   padding: 5px 10px;
   overflow-x: auto;
 }
@@ -18,8 +28,8 @@ html, body {
 .tab {
   display: flex;
   align-items: center;
-  background: #2e4d2f;
-  color: white;
+  background: var(--tab-bg);
+  color: var(--text-color);
   padding: 6px 12px;
   margin-right: 6px;
   border-radius: 8px 8px 0 0;
@@ -29,13 +39,8 @@ html, body {
   transition: background 0.2s;
 }
 
-.tab:hover {
-  background: #3a5c3b;
-}
-
-.tab.active {
-  background: #4CAF50;
-}
+.tab:hover { background: var(--tab-hover); }
+.tab.active { background: var(--tab-active); }
 
 .close-btn {
   margin-left: 10px;
@@ -43,10 +48,7 @@ html, body {
   font-weight: normal;
   cursor: pointer;
 }
-
-.close-btn:hover {
-  color: white;
-}
+.close-btn:hover { color: white; }
 
 #addTab {
   display: flex;
@@ -55,17 +57,14 @@ html, body {
   font-size: 20px;
   width: 32px;
   height: 32px;
-  background: #2e4d2f;
-  color: white;
+  background: var(--tab-bg);
+  color: var(--text-color);
   border-radius: 8px;
   cursor: pointer;
   transition: background 0.2s;
   border: none;
 }
-
-#addTab:hover {
-  background: #3a5c3b;
-}
+#addTab:hover { background: var(--tab-hover); }
 
 #topBar {
   display: flex;
@@ -80,20 +79,20 @@ html, body {
 #site {
   flex: 1;
   min-width: 0;
-  background: linear-gradient(to right, #347836, #004e68);
+  background: var(--input-bg);
   padding: 10px;
   border-radius: 5px;
-  color: #ffffff;
+  color: var(--text-color);
   font-weight: bold;
   border: none;
 }
 
 button.styled {
   white-space: nowrap;
-  background: linear-gradient(to right, #347836, #004e68);
+  background: var(--btn-bg);
   padding: 10px;
   border-radius: 5px;
-  color: #ffffff;
+  color: var(--text-color);
   font-weight: bold;
   border: none;
   cursor: pointer;
@@ -102,70 +101,50 @@ button.styled {
 #sitePage {
   width: 100%;
   height: calc(100vh - 60px - 42px);
+  position: relative;
 }
 
 iframe {
   width: 100%;
   height: 100%;
   border: none;
-  top: 102px;
+  position: absolute;
+  top: 0;
+  left: 0;
 }
 
-/* Settings overlay */
+/* Settings Overlay */
 #settingsOverlay {
   position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(6px);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-  z-index: 999;
-}
-
-#settingsOverlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Settings menu */
-#settingsMenu {
-  position: fixed;
-  top: 50%;
-  right: -320px;
-  transform: translateY(-50%);
-  width: 300px;
-  background: #222;
-  color: #fff;
-  padding: 20px;
-  border-radius: 12px 0 0 12px;
-  box-shadow: -4px 0 10px rgba(0,0,0,0.5);
-  transition: right 0.3s ease;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(8px);
+  display: none;
+  justify-content: center;
+  align-items: center;
   z-index: 1000;
 }
 
-#settingsMenu.active {
-  right: 0;
+#settingsMenu {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  min-width: 300px;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
 }
 
-#settingsMenu h2 {
-  margin-top: 0;
-}
-
-#settingsMenu ul {
-  list-style: none;
-  padding: 0;
-}
-
-#settingsMenu li {
-  padding: 10px;
-  margin: 6px 0;
-  background: #333;
+#settingsMenu button {
+  display: block;
+  margin: 8px auto;
+  padding: 10px 20px;
+  border: none;
   border-radius: 6px;
   cursor: pointer;
-  transition: background 0.2s;
 }
 
-#settingsMenu li:hover {
-  background: #444;
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
